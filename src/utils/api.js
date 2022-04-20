@@ -10,16 +10,24 @@ export const fetchTopics = () => {
   });
 };
 
-export const fetchArticles = (topic) => {
+export const fetchArticles = (topic,p,limit) => {
   let path = `/articles`;
-  if(topic){path+=`?topic=${topic}`}
+  if(!limit){limit=5}
+  if(limit){path+=`?limit=${limit}`}
+  if(topic){path+=`&topic=${topic}`}
+  if(p){path+=`&p=${p}`}
+  
   return myApi.get(path).then((res) => {
-    return res.data.articles;
+    return res.data;
   }).catch((err)=>{
-    console.log(err,'<==============');
   });
 };
 
+export const getArticleId = (article_id) => {
+  return myApi.get(`/articles/${article_id}`).then((res) => {
+    return res.data.article;
+  });
+};
 
 export const getCommentsByArticleId = (article_id) => {
   return myApi.get(`/articles/${article_id}/comments`).then((res) => {
