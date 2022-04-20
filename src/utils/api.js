@@ -31,18 +31,23 @@ export const getArticleId = (article_id) => {
 
 export const getCommentsByArticleId = (article_id) => {
   return myApi.get(`/articles/${article_id}/comments`).then((res) => {
-    return res.data.items;
+    return res.data.comments;
   });
 };
 
 export const addComment = (article_id,username,body) => {
   return myApi.post(`/articles/${article_id}/comments`,{username: username,body:body}).then((res) => {
-    return res.data.item;
+    return res.data.comment;
   });
 };
 
 export const removeCommentById = (comment_id) => {
   return myApi.delete(`/comments/${comment_id}`).then((res) => {
     return true;
+  });
+};
+export const patchCommentById = (comment_id,inc_votes) => {
+  return myApi.patch(`/comments/${comment_id}`,{'inc_votes':inc_votes}).then((res) => {
+    return res.data.comment;
   });
 };
