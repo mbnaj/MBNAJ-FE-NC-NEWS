@@ -13,6 +13,9 @@ body {
 .bg-primary{
   background-color: #1c3cbd !important;
 }
+.bg-danger{
+  background-color: #bd212b !important;
+}
 .img-fl{
   float: left;
   padding-right: 10px;
@@ -32,11 +35,16 @@ a:hover {
 .Capital_title {
   text-transform: uppercase;
 }
+.font-weight-bold{
+  font-weight: bold;
+}
 .breadcrumb,
 .breadcrumb a {
   color: white !important;
 }
-
+.breadcrumb-item+.breadcrumb-item::before {
+  color: white !important;
+}
 .pagination .page-item a{
   background-color: #212529;
   color: beige;
@@ -88,6 +96,21 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+
+
+.commentBox .card-body { padding:15px; }
+.commentBox .list-group { margin-bottom: 0; }
+.commentBox .card-title { display:inline }
+.commentBox .label-info { float: right; }
+.commentBox li.list-group-item {border-radius: 0;border: 0;border-top: 1px solid #ddd;}
+.commentBox li.list-group-item:hover { background-color: rgba(86,61,124,.1); }
+.commentBox .mic-info { color: #666666;font-size: 13px; }
+.commentBox .mic-info span{ color:#1c3cbd;font-size: 14px; }
+.commentBox .action { margin-top:5px; }
+.commentBox .comment-text { font-size: 14px; }
+.commentBox .btn-block { border-top-left-radius:0px;border-top-right-radius:0px; }
+.commentBox .delete_comment { float: right; }
 
 @media (max-width: 720px) {
   .logo {
