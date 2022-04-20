@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 
 import {
@@ -10,34 +10,42 @@ import {
   FormControl,
   Form,
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const Navibar = (props) => {
   const { topics, setSearch } = props;
 
   return (
     <Navbar
-      collapseOnSelect
+      collapseOnSelect 
       expand="lg"
-      bg="dark"
+      bg="primary"
       variant="dark"
       sticky="top"
       className="row"
     >
       <Container className="main-container">
-        <Navbar.Brand as={Link} to="/" title="Home">
-          <FaHome /> Home
-        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
+            <Nav.Link
+              as={NavLink}
+              to="/"
+              title="Home"
+              className="Capital_title"  eventKey={0}
+            >
+              <FaHome /> Home
+            </Nav.Link>
             {topics.map((topic) => {
+              //let active = (slug === topic.slug)?'active':'';
               return (
                 <Nav.Link
-                  as={Link}
-                  to={`topics/${topic.slug}`}
+                  as={NavLink}
+                  to={`articles/${topic.slug}`}
                   title={topic.slug}
                   key={topic.slug}
+                  className="Capital_title"
+                  eventKey={topic.slug}
                 >
                   {topic.slug}
                 </Nav.Link>
@@ -55,7 +63,7 @@ const Navibar = (props) => {
                 setSearch(e.target.value);
               }}
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success" className="btn btn-danger text-white">Search</Button>
           </Form>
         </Navbar.Collapse>
       </Container>
