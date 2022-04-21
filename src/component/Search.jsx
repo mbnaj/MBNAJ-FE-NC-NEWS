@@ -115,7 +115,7 @@ const Search = (props) => {
                             className="img-fl"
                           />
                           <Link
-                            to={`/article/${article.article_id}`}
+                            to={`/search/${article.article_id}`}
                             className="text-dark h3"
                           >
                             {article.title}
