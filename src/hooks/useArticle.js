@@ -17,7 +17,7 @@ const useArticle = (article_id) => {
     });
   }, [article_id]);
 
-  return {article , loading,comments };
+  return {article , loading,comments,setComments };
 };
 
 export default useArticle;

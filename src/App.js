@@ -8,6 +8,7 @@ import Navibar from "./component/Navibar";
 import Home from "./component/Home";
 import Articles from "./component/Articles";
 import Article from "./component/Article";
+import ErrorPage from "./component/ErrorPage";
 import { TopicProvider } from "./contexts/topics";
 //import { TopicContext } from "../contexts/topics";
 //import { useContext } from "react";
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/articles/:slug" element={<Articles/>} />
             <Route path="/article/:article_id" element={<Article />} />
+			<Route path="*" element={ErrorPage} />
           </Routes>
         </Container>
 

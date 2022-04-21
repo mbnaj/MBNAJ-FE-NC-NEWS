@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert"; // Import
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+
+import "react-confirm-alert/src/react-confirm-alert.css";
 import {
   Row,
   Col,
@@ -10,108 +11,155 @@ import {
   Card,
   Form,
   Button,
-  ListGroup,
+  Alert,
 } from "react-bootstrap";
 import Breadnav from "./Breadnav";
 import Sidebar from "./Sidebar";
 import Loading from "./Loading";
+import Comments from "./Comments";
 import useArticle from "../hooks/useArticle";
-import { removeCommentById,patchCommentById } from "../utils/api";
-import {
-  FaDownload,
-  FaTrashAlt,
-  FaThumbsUp,
-  FaThumbsDown,
-} from "react-icons/fa";
+import { addComment, patchArticleById } from "../utils/api";
 
 const Article = () => {
   const { article_id } = useParams();
-  const { article, comments, loading } = useArticle(article_id);
+  const { article, comments, setComments, loading } = useArticle(article_id);
   const [body, setBody] = useState("");
-  const [commentId, setCommentId] = useState("");
-  
-  /*
-  const[isOpen,setisOpen] = useState(false);
-
-  let initView = 5;
-
-  const toggleOpen = ()=>{
-      setisOpen((currentOpen)=>!currentOpen);
-  }
-*/
-const handleDislike = (id)=>{
-  patchCommentById(id,-1);
-}
-const handlelike = (id)=>{
-  patchCommentById(id,1);
-}
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(body);
-  };
+  const [votes, setVotes] = useState(article.votes);
+  const [alert, setAlert] = useState({
+    alertShow: false,
+    alertType: "",
+    alertMsg: "",
+  });
+  const username = "grumpy19";
 
   useEffect(() => {
+    setVotes(article.votes);
+  }, [article.votes]);
 
-  }, [commentId]);
 
-  const handleRemoveComment = (id) => {
-    const options = {
-      message: "Are you sure you want to delete this comment?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            console.log(commentId,'<=========')
-            await removeCommentById(id);
-            //alert('Click Yes');
-          },
-        },
-        {
-          label: "No",
-          onClick: () => {
-            //alert('Click No')
-          },
-        },
-      ],
-    };
-    confirmAlert(options);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addComment(article_id, username, body)
+      .then((newComment) => {
+        setAlert({
+          alertShow: true,
+          alertType: "success",
+          alertMsg: "Your comment has been submitted successfully!!",
+        });
+        const newComments = [newComment, ...comments];
+        setComments(newComments);
+        setTimeout(() => {
+          setAlert({ alertShow: false, alertType: "", alertMsg: "" });
+        }, 2000);
+      })
+      .catch(() => {
+        setAlert({
+          alertShow: true,
+          alertType: "danger",
+          alertMsg: "Error happened while submitting your comment!!",
+        });
+        setTimeout(() => {
+          setAlert({ alertShow: false, alertType: "", alertMsg: "" });
+        }, 2000);
+      });
+    setBody("");
   };
+
+  const handleDislike = (id) => {
+    let newVotes = votes;
+    newVotes--;
+    setVotes(newVotes);
+    patchArticleById(id, -1)
+      .then(() => {})
+      .catch(() => {
+        newVotes++;
+        setVotes(newVotes);
+      });
+  };
+
+  const handlelike = (id) => {
+    let newVotes = votes ;
+    newVotes++;
+    setVotes(newVotes);
+    patchArticleById(id, 1)
+      .then(() => {})
+      .catch(() => {
+        newVotes--;
+        setVotes(newVotes);
+      });
+  };
+
   return (
     <Container className="main-container">
       {loading === true ? <Loading></Loading> : ""}
       <Row className="pt-3 pb-3">
         <Col className="col-md-8">
-          <Breadnav activeTitle={article.topic}></Breadnav>
+          <Breadnav activeTitle={article?.topic}></Breadnav>
           <Card className=" mb-4">
             <Card.Body>
               <Card.Title>
-                <h2>{article.title}</h2>
+                <h2>{article?.title}</h2>
               </Card.Title>
               <Card.Text>
-                <span>{article.author}</span>
+                <span>{article?.author}</span>
                 <br />
                 <br />
-                {article.body}
+                {article?.body}
                 <br />
               </Card.Text>
             </Card.Body>
-            <Card.Footer>{article.created_at}</Card.Footer>
+            <Card.Footer>
+              <div className="fl line_height_35">{article?.created_at}</div>
+
+              <div className="action fr">
+                <Button
+                  variant="outline-light"
+                  className="text-dark"
+                  title="Like"
+                  onClick={() => {
+                    handlelike(article?.article_id);
+                  }}
+                >
+                  <FaThumbsUp />
+                </Button>
+                <span className="text=center">( {votes} )</span>
+                <Button
+                  variant="outline-light"
+                  className="text-dark"
+                  title="Dislike"
+                  onClick={() => {
+                    handleDislike(article?.article_id);
+                  }}
+                >
+                  <FaThumbsDown />
+                </Button>
+              </div>
+            </Card.Footer>
           </Card>
           <hr />
           <h3>Add new comment</h3>
 
           <Form className="p-5 bg-light border" onSubmit={handleSubmit}>
+            {alert.alertShow ? (
+              <Alert variant={alert.alertType}>
+                <p>{alert.alertMsg}</p>
+              </Alert>
+            ) : null}
+
             <Form.Group className="mb-3" controlId="frm_comment">
               <Form.Label>Comment:</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
+                value={body}
                 onChange={(e) => {
                   setBody(e.target.value);
                 }}
               />
             </Form.Group>
-
+            <p>
+              Your comment will be inserted by: <strong>{username}</strong>
+            </p>
             <Button variant="dark" type="submit">
               Submit
             </Button>
@@ -119,88 +167,7 @@ const handlelike = (id)=>{
 
           <Row className="pt-5">
             <Col md={12}>
-              <Card className="commentBox">
-                <Card.Body>
-                  <Card.Title>
-                    Recent Comments{" "}
-                    <span className="label label-info">{comments.length}</span>
-                  </Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    <hr />
-                  </Card.Subtitle>
-                  <Card.Text as={"div"}>
-                    <ListGroup>
-                      {comments.map((comment) => {
-
-                        return (
-                          <ListGroup.Item
-                            className="mt-2"
-                            key={comment.comment_id}
-                          >
-                            <Row>
-                              <Col xs={2} md={2} className="text-center">
-                                <img
-                                  src="http://placehold.jp/80x80.png"
-                                  className="rounded-circle img-fluid"
-                                  alt=""
-                                />
-                              </Col>
-                              <Col xs={10} md={10}>
-                                <div className="mic-info">
-                                  By: <span>{comment.author}</span> at{" "}
-                                  {comment.created_at}
-                                  <Button
-                                    variant="danger"
-                                    size="sm"
-                                    title="Delete"
-                                    className="delete_comment"
-                                    onClick={(e) => {
-                                      setCommentId(comment.comment_id);
-                                      handleRemoveComment(comment.comment_id);
-                                    }}
-                                  >
-                                    <FaTrashAlt />
-                                  </Button>
-                                </div>
-
-                                <div className="comment-text pt-2">
-                                  {comment.body}
-                                </div>
-                                <div className="action">
-                                  <Button
-                                    variant="outline-light"
-                                    className="text-dark"
-                                    title="Like"
-                                    onClick={()=>{handlelike(comment.comment_id)}}
-                                  >
-                                    <FaThumbsUp />
-                                  </Button>
-                                  <span className="text=center">
-                                    ( {comment.votes} )
-                                  </span>
-                                  <Button
-                                    variant="outline-light"
-                                    className="text-dark"
-                                    title="Dislike"
-                                    onClick={()=>{handleDislike(comment.comment_id)}}
-                                  >
-                                    <FaThumbsDown />
-                                  </Button>
-                                </div>
-                              </Col>
-                            </Row>
-                          </ListGroup.Item>
-                        );
-                      })}
-                    </ListGroup>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-
-              <div className="d-grid gap-2">
-                <Button variant="primary" size="sm" ><FaDownload /> Show All <FaDownload /></Button>
-              </div>
-
+              <Comments comments={comments}></Comments>
             </Col>
           </Row>
         </Col>

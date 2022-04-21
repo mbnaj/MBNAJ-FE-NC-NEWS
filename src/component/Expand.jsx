@@ -10,6 +10,11 @@ return (
     <>
     {isOpen ? children : null}
     <button onClick={toggleOpen}>Show All</button>
+    <div className="d-grid gap-2">
+        <button variant="primary" size="sm">
+          FaDownload  Show All FaDownload 
+        </button>
+      </div>
     </>
 );
 }
