@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate  } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 
 import {
@@ -13,7 +13,14 @@ import {
 
 
 const Navibar = (props) => {
-  const { topics, setSearch } = props;
+  const { topics,search, setSearch,setQuery } = props;
+  const navigate = useNavigate()
+
+  const onSubmitHandler = () => {
+    setQuery(search);
+    navigate(`/search?q=${search}`);
+    setSearch('');
+  }
 
   return (
     <Navbar
@@ -53,17 +60,21 @@ const Navibar = (props) => {
             })}
           </Nav>
 
-          <Form className="d-flex">
+          <Form className="d-flex" onSubmit={(e)=>{
+            e.preventDefault();
+            onSubmitHandler();
+          }}>
             <FormControl
               type="search"
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
             />
-            <Button variant="outline-success" className="btn btn-danger text-white">Search</Button>
+            <Button type="submit" variant="outline-success" className="btn btn-danger text-white">Search</Button>
           </Form>
         </Navbar.Collapse>
       </Container>
