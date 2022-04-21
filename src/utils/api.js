@@ -10,7 +10,7 @@ export const fetchTopics = () => {
   });
 };
 
-export const fetchArticles = (topic,p,limit=5,sort_by,order) => {
+export const fetchArticles = (topic,p,limit=5,sort_by,order,q) => {
   let sortbyColumns = [
     "title",
     "article_id",
@@ -29,7 +29,7 @@ export const fetchArticles = (topic,p,limit=5,sort_by,order) => {
   //if(topic){path+=`&topic=${topic}`}
   //if(p){path+=`&p=${p}`}
   
-  return myApi.get(path,{ params: { 'limit': limit,'order':order,'topic':topic,'p':p ,'sort_by':sort_by} }).then((res) => {
+  return myApi.get(path,{ params: { 'limit': limit,'order':order,'topic':topic,'p':p ,'sort_by':sort_by,'q':q} }).then((res) => {
     return res.data;
   }).catch((err)=>{
   });
