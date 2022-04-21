@@ -14,8 +14,6 @@ import { TopicProvider } from "./contexts/topics";
 //import { useContext } from "react";
 import "./style.css";
 
-
-
 function App() {
   const { topics } = useTopics();
   //const {topics} = useContext(TopicContext);
@@ -37,9 +35,9 @@ function App() {
         <Container className="main-container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/articles/:slug" element={<Articles/>} />
+            <Route path="/articles/:slug" element={<Articles />} />
             <Route path="/article/:article_id" element={<Article />} />
-			<Route path="*" element={ErrorPage} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Container>
 
