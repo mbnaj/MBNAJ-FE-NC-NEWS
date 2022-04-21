@@ -10,14 +10,26 @@ export const fetchTopics = () => {
   });
 };
 
-export const fetchArticles = (topic,p,limit) => {
+export const fetchArticles = (topic,p,limit=5,sort_by,order) => {
+  let sortbyColumns = [
+    "title",
+    "article_id",
+    "created_at",
+    "votes",
+    "comment_count",
+    "author",
+  ];
+
   let path = `/articles`;
-  if(!limit){limit=5}
-  if(limit){path+=`?limit=${limit}`}
-  if(topic){path+=`&topic=${topic}`}
-  if(p){path+=`&p=${p}`}
+  if (sortbyColumns.includes(sort_by) === false) {
+    sort_by = "created_at";
+  }
+  //if(!limit){limit=5}
+  //if(limit){path+=`?limit=${limit}`}
+  //if(topic){path+=`&topic=${topic}`}
+  //if(p){path+=`&p=${p}`}
   
-  return myApi.get(path).then((res) => {
+  return myApi.get(path,{ params: { 'limit': limit,'order':order,'topic':topic,'p':p ,'sort_by':sort_by} }).then((res) => {
     return res.data;
   }).catch((err)=>{
   });
@@ -49,5 +61,11 @@ export const removeCommentById = (comment_id) => {
 export const patchCommentById = (comment_id,inc_votes) => {
   return myApi.patch(`/comments/${comment_id}`,{'inc_votes':inc_votes}).then((res) => {
     return res.data.comment;
+  });
+};
+
+export const patchArticleById = (article_id,inc_votes) => {
+  return myApi.patch(`/articles/${article_id}`,{'inc_votes':inc_votes}).then((res) => {
+    return res.data.article;
   });
 };
