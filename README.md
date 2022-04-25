@@ -1,55 +1,63 @@
-# Northcoders News
+# FE NC News - React
 
-Northcoders News is a social news aggregation, web content rating, and discussion website.
+FE NC News is a social news aggregation, web content rating, and discussion website.
+It has articles which are divided into topics. Each article has user curated ratings and can be up or down voted using the API. Users can also add comments about an article.
 
-Northcoders News has articles which are divided into topics. Each article has user curated ratings and can be up or down voted using the API. Users can also add comments about an article.
+This project buil in React and used APIs from MBNAJ-BE-NC-News project in nodejs. 
 
-This sprint should consolidate your understanding of making a [C.R.U.D](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) application from a front end perspective.
+This project uses [Backend News API](https://mbnaj-articles.herokuapp.com/api) under the hood. and you can find it from here: [Click to see the API repo](https://github.com/mbnaj/MBNAJ-BE-NC-News/)
 
-## Kanban
+Demo: [Click to see DEMO](https://mbnaj-articles.netlify.app/)
 
-### Link to your Trello Board here: https://trello.com/b/N0JpMu2y/mbnaj-fe-nc-news
 
-To keep track of the tasks involved in this project we're going to use a kanban board. Ensure that you work on one _ticket_ at time. You can click on the ticket to find out more information about what is required for the feature. A ticket is not considered complete unless both the happy path and errors response are handled and there is a basic structure to your styling.
 
-**We suggest you work through the tickets from top to bottom.**
+## Getting Started
 
-## Git Branching and Pull Requests
+This project created for a Meetup talk about Server Side Rendering with React.
 
-You will be working on each ticket on a new **branch**.
 
-To create and switch to a new git branch use the command:
+### Installing
 
-```
-git checkout -b <new branch name>
-```
+First clone project and install dependencies
 
-This will create a branch and move over to that branch. (Omit the `-b` flag if you wish to switch to an already existing branch).
-
-We recommend that you name the branch something that clearley shows the ticket you are working on. eg. `fe-ncnews-display-articles`
-
-When pushing the branch to git hub ensure that you make reference to the branch you are pushing to on the remote.
-
-```
-git push origin <branch name>
+```sh
+$ mkdir react-news && cd react-news
+$ git clone https://github.com/mbnaj/MBNAJ-FE-NC-NEWS.git
+$ cd MBNAJ-FE-NC-NEWS
+$ npm install
 ```
 
-From github you can make a pull request and share the link and ticket number on your `nchelp` with a zoom link for you to demo your feature. A tutor will swing by to review your code. Ensure that you keep your trello up to date whilst you await the PR approval.
 
-Once a pull request been accepted be sure to switch back to the main branch and pull down the updated changes.
+Navigate to [News API](https://github.com/mbnaj/MBNAJ-BE-NC-News/) if you need to understand how it works.
 
+
+## Development and Build Process
+
+
+| Command | Description |
+| ------- | ----------- |
+| `npm start` | Starts development server with hot reloading. |
+| `npm run build` | Runs development build. Outputs files to `/build`. |
+| `npm run dist` | Runs production build. Outputs files to `/dist`. |
+
+
+Navigate to [http://localhost:3000](http://localhost:3000)
+
+## Deployment
+
+Deployment build
+
+```sh
+$ npm run build:prod
 ```
-git checkout main
 
-git pull origin main
-```
+You can deploy this project to:
 
-You can tidy up your local branches once they have been pull into main by deleting them:
+- [Heroku](https://www.heroku.com/)
+OR
+- [netlify](https://www.netlify.app/)
 
-```
-git branch -D <local branch>
-```
-  
-## Important
+## Built With
 
-This sprint is among the ones we'll ask you to complete in order to put you forward for jobs. Put a little bit of love into it! :) <3
+- [React](https://reactjs.org/)
+- [Node.js](https://nodejs.org/)
